@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+#my_list
+*.sln
+*.vcxproj*
+*.vs*
+*Debug
+
+#self
+.gitignore
