@@ -36,6 +36,3 @@
 *.vcxproj*
 *.vs*
 *Debug
-
-#self
-.gitignore
