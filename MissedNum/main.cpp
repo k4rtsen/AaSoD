@@ -67,6 +67,10 @@ int MissedNum(int *arr, int size)
     int sum = 0;
     for (int i = 0; i < size - 1; i++)
         sum += arr[i];
+    // the sum of all elements of the previous and this array differs exactly by the missing number
+    // to find this number, you need the sum of the elements of the whole array (we learn from the size passed to the function) and the sum of the elements of the array with the element removed
+    // after that, find out their difference
+    // ---
     // сумма всех элементов предыдущего и данного массива отличается ровно на пропущенное число
     // чтобы найти данное число, необходимо сумму элементов целого массива (узнаем из размера переданного в функцию) и сумму элементов массива с удаленным элементом
     // после чего, узнать их разницу
