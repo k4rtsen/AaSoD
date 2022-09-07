@@ -24,23 +24,31 @@ void BubbleSort(int*, int);
 */ 
 void ShakerSort(int*, int);
 
+/* Comb sort
+* the best case - O(n log n)
+* the middle case - O(n^2 / 2^p), where p is count of increments
+* the worst case - O(n^2)
+* memory cost - O(1)
+*/
+void CombSort(int*, int);
+
 int main()
 {
     srand(static_cast<unsigned int>(time(0)));
     rand();
 
-    // init
+    // --- INIT ---
     cout << "Please, enter the n of array...\t";
     int n;
     cin >> n;
     int* arr = new int[n];
     
+    // testing algorithms
     SetRandomValuesOfArray(arr, n);
-    print(arr, n);
+    BubbleSort(arr, n);
 
-    // Sorting...
+    SetRandomValuesOfArray(arr, n);
     ShakerSort(arr, n);
-    print(arr, n);
 
     // --- END --- 
     delete[] arr;
@@ -63,35 +71,69 @@ void SetRandomValuesOfArray(int* arr, int size)
 
 void BubbleSort(int* values, int size) 
 {
+    int iter = 0;
     for (size_t i = 0; i < size - 1; ++i) 
     {
-        for (size_t j = 0; j < (size - i) - 1; ++j) 
+        bool flag = false;
+        for (size_t j = 0; j < (size - i) - 1; ++j) // we don't check the last items already sorted, for this reason condition is j < (size - i) - 1
         {
-            if (values[j + 1] < values[j]) 
+            ++iter;
+            if (values[j + 1] < values[j])
             {
                 swap(values[j], values[j + 1]);
+                flag = true; 
             }
         }
+        // if we do not swap elements, then the array is already sorted
+        if (!flag)
+            break;
     }
+    cout << "Bubble Sorting Iterations: " << iter << endl;
 }
 
 void ShakerSort(int* values, int size)
 {
     int left = 0, right = size;
-    while (left < right) 
+    int iter = 0;
+    while (left < right) // our array is decreases every iteration
     {
+        bool flag = false;
+        // from left to right
         for(size_t i = left; i < right - 1; i++)
         {
-            if (values[i] > values[i + 1])
+            ++iter;
+            if (values[i] > values[i + 1]) 
+            {
                 swap(values[i], values[i + 1]);
+                flag = true;
+            }
         }
+        // the last element already the biggest
         --right;
+        // if we do not swap elements, then the array is already sorted
+        if (!flag)
+            break;
 
+        // from right to left
         for (size_t j = right; j > left; j--)
         {
-            if (values[j] < values[j - 1])
+            ++iter;
+            if (values[j] < values[j - 1]) 
+            {
                 swap(values[j], values[j - 1]);
+                flag = true;
+            }
         }
+        // the first item already the smallest 
         ++left;
+        // if we do not swap elements, then the array is already sorted
+        if (!flag)
+            break;
     }
+    cout << "Shaker Sorting Iterations: " << iter << endl;
+}
+
+void CombSort(int* values, int size)
+{
+    const double factor = 1.247;
 }
