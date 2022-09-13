@@ -35,7 +35,7 @@ void CombSort(int*, int);
 int main()
 {
     srand(static_cast<unsigned int>(time(0)));
-    rand();
+    // rand();
 
     // --- INIT ---
     cout << "Please, enter the n of array...\t";
@@ -45,10 +45,19 @@ int main()
     
     // testing algorithms
     SetRandomValuesOfArray(arr, n);
+    print(arr, n);
     BubbleSort(arr, n);
+    cout << endl;
 
     SetRandomValuesOfArray(arr, n);
+    print(arr, n);
     ShakerSort(arr, n);
+    cout << endl;
+
+    SetRandomValuesOfArray(arr, n);
+    print(arr, n);
+    CombSort(arr, n);
+    cout << endl;
 
     // --- END --- 
     delete[] arr;
@@ -72,7 +81,7 @@ void SetRandomValuesOfArray(int* arr, int size)
 void BubbleSort(int* values, int size) 
 {
     int iter = 0;
-    for (size_t i = 0; i < size - 1; ++i) 
+    for (size_t i = 0; i < static_cast<unsigned long long>(size) - 1; ++i)
     {
         bool flag = false;
         for (size_t j = 0; j < (size - i) - 1; ++j) // we don't check the last items already sorted, for this reason condition is j < (size - i) - 1
@@ -89,6 +98,7 @@ void BubbleSort(int* values, int size)
             break;
     }
     cout << "Bubble Sorting Iterations: " << iter << endl;
+    print(values, size);
 }
 
 void ShakerSort(int* values, int size)
@@ -99,7 +109,7 @@ void ShakerSort(int* values, int size)
     {
         bool flag = false;
         // from left to right
-        for(size_t i = left; i < right - 1; i++)
+        for (size_t i = left; i < static_cast<unsigned long long>(right) - 1; i++)
         {
             ++iter;
             if (values[i] > values[i + 1]) 
@@ -131,9 +141,26 @@ void ShakerSort(int* values, int size)
             break;
     }
     cout << "Shaker Sorting Iterations: " << iter << endl;
+    print(values, size);
 }
 
 void CombSort(int* values, int size)
 {
     const double factor = 1.247;
+    unsigned int step = size / factor, iterations = 0;
+    while (step > 1) {
+        // preparations
+        iterations++;
+        unsigned int leftBoarder = 0, rightBoarder = leftBoarder + step;
+        // bubble turtles
+        for (int i = rightBoarder, j = leftBoarder; i < size; i++, j++) {
+            iterations++;
+            if (values[j] > values[i])
+                swap(values[i], values[j]);
+        }
+        step /= factor;
+    }
+    cout << "Comb Sorting Iterations: " << iterations << endl;
+    print(values, size);
+    BubbleSort(values, size);
 }
