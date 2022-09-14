@@ -1,8 +1,7 @@
-﻿#include <iostream>
-
+﻿#include <bits/stdc++.h> 
 using namespace std;
 
-int main();
+#define forn(i, n) for (int i = 0; i < (int)(n); i++)
 
 void print(int*, int); // show array
 
@@ -14,7 +13,7 @@ void SetRandomValuesOfArray(int*, int); // mix array
 * the worst case - O(n^2)
 * memory cost - O(1)
 */ 
-void BubbleSort(int*, int);
+int BubbleSort(int*, int);
 
 /* Shaker sort 
 * the best case - O(n)
@@ -22,7 +21,7 @@ void BubbleSort(int*, int);
 * the worst case - O(n^2)
 * memory cost - O(1)
 */ 
-void ShakerSort(int*, int);
+int ShakerSort(int*, int);
 
 /* Comb sort
 * the best case - O(n log n)
@@ -30,38 +29,32 @@ void ShakerSort(int*, int);
 * the worst case - O(n^2)
 * memory cost - O(1)
 */
-void CombSort(int*, int);
+int CombSort(int*, int);
 
 int main()
 {
-    srand(static_cast<unsigned int>(time(0)));
+    // srand(static_cast<unsigned int>(time(0)));
     // rand();
 
     // --- INIT ---
-    cout << "Please, enter the n of array...\t";
-    int n;
-    cin >> n;
+
+    const int n = 1000;
     int* arr = new int[n];
-    
-    // testing algorithms
-    SetRandomValuesOfArray(arr, n);
-    print(arr, n);
-    BubbleSort(arr, n);
-    cout << endl;
+    forn(i, n){
+        arr[i] = i;
+    }
+    // SetRandomValuesOfArray(arr, n); // exist repeat values
 
-    SetRandomValuesOfArray(arr, n);
+    random_shuffle(arr, arr + n);
     print(arr, n);
-    ShakerSort(arr, n);
-    cout << endl;
-
-    SetRandomValuesOfArray(arr, n);
+    int iter = CombSort(arr, n);
     print(arr, n);
-    CombSort(arr, n);
+    printf("Iterations: %d\n", iter);
     cout << endl;
 
     // --- END --- 
     delete[] arr;
-    system("pause");
+    return 0;
 }
 
 void print(int* arr, int size) {
@@ -78,13 +71,14 @@ void SetRandomValuesOfArray(int* arr, int size)
         arr[i] = rand() % size;
 }
 
-void BubbleSort(int* values, int size) 
+int BubbleSort(int* values, int size) 
 {
     int iter = 0;
-    for (size_t i = 0; i < static_cast<unsigned long long>(size) - 1; ++i)
+    for (size_t i = 0; i < size - 1; ++i)
     {
         bool flag = false;
-        for (size_t j = 0; j < (size - i) - 1; ++j) // we don't check the last items already sorted, for this reason condition is j < (size - i) - 1
+        ++iter;
+        for (size_t j = 0; j < size - i - 1; ++j) // we don't check the last items already sorted, for this reason condition is j < (size - i) - 1
         {
             ++iter;
             if (values[j + 1] < values[j])
@@ -97,11 +91,10 @@ void BubbleSort(int* values, int size)
         if (!flag)
             break;
     }
-    cout << "Bubble Sorting Iterations: " << iter << endl;
-    print(values, size);
+    return iter;
 }
 
-void ShakerSort(int* values, int size)
+int ShakerSort(int* values, int size)
 {
     int left = 0, right = size;
     int iter = 0;
@@ -140,27 +133,24 @@ void ShakerSort(int* values, int size)
         if (!flag)
             break;
     }
-    cout << "Shaker Sorting Iterations: " << iter << endl;
-    print(values, size);
+    return iter;
 }
 
-void CombSort(int* values, int size)
+int CombSort(int* values, int size)
 {
     const double factor = 1.247;
-    unsigned int step = size / factor, iterations = 0;
+    unsigned int step = size / factor, iter = 0;
     while (step > 1) {
         // preparations
-        iterations++;
+        iter++;
         unsigned int leftBoarder = 0, rightBoarder = leftBoarder + step;
         // bubble turtles
         for (int i = rightBoarder, j = leftBoarder; i < size; i++, j++) {
-            iterations++;
+            iter++;
             if (values[j] > values[i])
                 swap(values[i], values[j]);
         }
         step /= factor;
     }
-    cout << "Comb Sorting Iterations: " << iterations << endl;
-    print(values, size);
-    BubbleSort(values, size);
+    return iter + BubbleSort(values, size);
 }
