@@ -1,4 +1,5 @@
-﻿#include <bits/stdc++.h> 
+﻿#include <iostream>
+#include <algorithm>
 using namespace std;
 
 #define forn(i, n) for (int i = 0; i < (int)(n); i++)
@@ -13,7 +14,7 @@ void SetRandomValuesOfArray(int*, int); // mix array
 * the worst case - O(n^2)
 * memory cost - O(1)
 */ 
-int BubbleSort(int*, int);
+long long BubbleSort(int*, int);
 
 /* Shaker sort 
 * the best case - O(n)
@@ -21,7 +22,7 @@ int BubbleSort(int*, int);
 * the worst case - O(n^2)
 * memory cost - O(1)
 */ 
-int ShakerSort(int*, int);
+long long ShakerSort(int*, int);
 
 /* Comb sort
 * the best case - O(n log n)
@@ -29,27 +30,27 @@ int ShakerSort(int*, int);
 * the worst case - O(n^2)
 * memory cost - O(1)
 */
-int CombSort(int*, int);
+long long CombSort(int*, int);
 
 int main()
 {
-    // srand(static_cast<unsigned int>(time(0)));
-    // rand();
-
-    // --- INIT ---
-
-    const int n = 1000;
+    const int n = 10000;
     int* arr = new int[n];
     forn(i, n){
         arr[i] = i;
     }
-    // SetRandomValuesOfArray(arr, n); // exist repeat values
 
     random_shuffle(arr, arr + n);
-    print(arr, n);
-    int iter = CombSort(arr, n);
-    print(arr, n);
-    printf("Iterations: %d\n", iter);
+    long long iterBubbleSort = BubbleSort(arr, n);
+    random_shuffle(arr, arr + n);
+    long long iterShakerSort = ShakerSort(arr, n);
+    random_shuffle(arr, arr + n);
+    long long iterCombSort = CombSort(arr, n);
+
+    printf("Iterations BubbleSort:\t%llu\nIterations ShakerSort:\t%llu\nIterations CombSort:\t%llu\n", 
+            iterBubbleSort,
+            iterShakerSort,
+            iterCombSort);
     cout << endl;
 
     // --- END --- 
@@ -71,9 +72,9 @@ void SetRandomValuesOfArray(int* arr, int size)
         arr[i] = rand() % size;
 }
 
-int BubbleSort(int* values, int size) 
+long long BubbleSort(int* values, int size) 
 {
-    int iter = 0;
+    long long iter = 0;
     for (size_t i = 0; i < size - 1; ++i)
     {
         bool flag = false;
@@ -94,10 +95,10 @@ int BubbleSort(int* values, int size)
     return iter;
 }
 
-int ShakerSort(int* values, int size)
+long long ShakerSort(int* values, int size)
 {
     int left = 0, right = size;
-    int iter = 0;
+    long long iter = 0;
     while (left < right) // our array is decreases every iteration
     {
         bool flag = false;
@@ -136,10 +137,11 @@ int ShakerSort(int* values, int size)
     return iter;
 }
 
-int CombSort(int* values, int size)
+long long CombSort(int* values, int size)
 {
     const double factor = 1.247;
-    unsigned int step = size / factor, iter = 0;
+    unsigned int step = size / factor;
+    long long iter = 0;
     while (step > 1) {
         // preparations
         iter++;
