@@ -36,3 +36,5 @@
 *.vcxproj*
 *.vs*
 *Debug
+*.pdb
+*.ilk
