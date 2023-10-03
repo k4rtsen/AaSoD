@@ -12,6 +12,7 @@ Int gcd(Int a, Int b)
         gcd(a % b, b);
     if (b >= a)
         gcd(a, b % a);
+    return -1;
 }
 
 int main(void)
