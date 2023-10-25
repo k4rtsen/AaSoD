@@ -6,10 +6,10 @@ using namespace std;
 bool isEven(int value)
 {
     const short bits = 8;
-    unsigned short countOfShift = sizeof(value) * bits - 1; // digits before the last bit
-    value = value << countOfShift;                          // delete all digits before last bit
-    value = value >> countOfShift;                          // return the remaining bit to its place
-    return !(static_cast<bool>(value));                // the last bit for even numbers is 0, otherwise
+    unsigned short countOfShift = sizeof(value) * bits - 1; // the number of digits before the last one
+                                                            // the last bit for even numbers is 0, otherwise 1
+    value = value << countOfShift;                          // move the last bit to the very beginning of the sequence and inserting zeros after it
+    return !(static_cast<bool>(value));                     // if all bits in sequence is 0, then nuber is even, otherwise odd
 }
 
 bool isEven2(int value)
@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
         bool even1 = isEven(i);
         bool even2 = isEven2(i);
 
-        if (count % 1000000 == 0)
+        if (count % 10000000 == 0)
         {
             cout << "1.\t" << i << " is " << even1 << endl;
             cout << "2.\t" << i << " is " << even2 << endl;
