@@ -9,9 +9,10 @@ bool isEven(int value)
     unsigned short countOfShift = sizeof(value) * bits - 1; // the number of digits before the last one
                                                             // the last bit for even numbers is 0, otherwise 1
     value = value << countOfShift;                          // move the last bit to the very beginning of the sequence and inserting zeros after it
-    return !(static_cast<bool>(value));                     // if all bits in sequence is 0, then nuber is even, otherwise odd
+    return !(static_cast<bool>(value));                     // if all bits in sequence is 0, then number is even, otherwise odd
 }
 
+// эта хрень работает быстрее :(
 bool isEven2(int value)
 {
     return value % 2 == 0;
