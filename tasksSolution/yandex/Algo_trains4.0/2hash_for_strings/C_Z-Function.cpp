@@ -65,6 +65,73 @@ vector<int> z_function(string str)
     return z;
 }
 
+class HashStr
+{
+private:
+    const long long x_ = 257, p = 1000000007;
+    long long *h, *x, n;
+
+public:
+    // высчитывает хэш строки
+    HashStr(string str)
+    {
+        n = str.size();
+        h = new long long[n + 1]; // hashes for string
+        x = new long long[n + 1];
+        h[0] = 0;
+        x[0] = 1;
+
+        for (int i = 1; i < n + 1; i++)
+        {
+            h[i] = (h[i - 1] * x_ + int(str[i - 1])) % p;
+            x[i] = (x[i - 1] * x_) % p;
+        }
+    }
+
+    // Считает равны ли хэши подстрок
+    bool Is_substrs_equal(int len, int from1, int from2)
+    {
+        if (len + from1 > n || len + from2 > n)
+        {
+            cout << "Error: Range out!" << endl;
+            return false;
+        }
+        return (h[from1 + len] + h[from2] * x[len]) % p == (h[from2 + len] + h[from1] * x[len]) % p;
+    }
+};
+
+int equal_longest_str_BS(HashStr *hash, int left, int right, int limit)
+{
+    if (right - left <= 1)
+        return hash->Is_substrs_equal(right - left, 0, left) ? 1 : 0;
+
+    int mid = (right + left) / 2;
+    if (!hash->Is_substrs_equal(right - left, 0, left))
+    {
+        equal_longest_str_BS(hash, left, mid, limit);
+    }
+    else
+    {
+        int mid2 = (limit - right) / 2;
+        equal_longest_str_BS(hash, left, mid2, limit);
+    }
+    return right - left;
+}
+
+vector<int> z_function_per_log(string str)
+{
+    int n = str.size();
+    vector<int> res(n, 0);
+
+    HashStr hash(str);
+    for (int i = 1; i < n; i++)
+    {
+        res[i] = equal_longest_str_BS(&hash, i, n, n);
+    }
+
+    return res;
+}
+
 void printVector(vector<int> arr)
 {
     for (auto &val : arr)
@@ -83,7 +150,7 @@ int main(int argc, char const *argv[])
 
     // in.close();
 
-    printVector(z_function(str));
+    printVector(z_function_per_log(str));
 
     return 0;
 }

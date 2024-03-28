@@ -8,13 +8,13 @@ class HashStr
 {
 private:
     const long long x_ = 257, p = 1000000007;
-    long long *h, *x, *rh;
+    long long *h, *x, *rh, n;
 
 public:
     // высчитывает хэш строки
     HashStr(string str)
     {
-        int n = str.size();
+        n = str.size();
         h = new long long[n + 1]; // hashes for string
         rh = new long long[n + 1]; // hashes for revers string
         x = new long long[n + 1];
@@ -33,6 +33,11 @@ public:
     // Считает равны ли хэши подстрок
     bool Is_substrs_equal(int len, int from1, int from2)
     {
+        if (len + from1 > n || len + from2 > n)
+        {
+            cout << "Error: Range out!" << endl;
+            return false;
+        }
         return (h[from1 + len] + h[from2] * x[len]) % p == (h[from2 + len] + h[from1] * x[len]) % p;
     }
 };
