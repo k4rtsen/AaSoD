@@ -35,7 +35,12 @@ public:
     {
         if (len + from1 > n || len + from2 > n)
         {
-            cout << "Error: Range out!" << endl;
+            throw invalid_argument("Error : Out of range...");
+            return false;
+        }
+        if (len <= 0)
+        {
+            throw invalid_argument("Error : Length can't be a negative!");
             return false;
         }
         return (h[from1 + len] + h[from2] * x[len]) % p == (h[from2 + len] + h[from1] * x[len]) % p;

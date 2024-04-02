@@ -96,26 +96,46 @@ public:
             cout << "Error: Range out!" << endl;
             return false;
         }
+        // if (len > 0)
+        //     cout << "Error : Len is not positive!" << endl;
         return (h[from1 + len] + h[from2] * x[len]) % p == (h[from2 + len] + h[from1] * x[len]) % p;
     }
 };
 
-int equal_longest_str_BS(HashStr *hash, int left, int right, int limit)
+int FindZBinSearch(HashStr &hash, const int len, const int pos, const int last_good_res = 0, const int last_bad_res = 0)
 {
-    if (right - left <= 1)
-        return hash->Is_substrs_equal(right - left, 0, left) ? 1 : 0;
+    constexpr int StartPosition = 0; // начальная позиция префикса всегда 0
+    if (len == 0)
+        return 0;
 
-    int mid = (right + left) / 2;
-    if (!hash->Is_substrs_equal(right - left, 0, left))
+    // сравнение строк
+    if (!hash.Is_substrs_equal(len, StartPosition, pos))
     {
-        equal_longest_str_BS(hash, left, mid, limit);
+        // если не равны строки
+        int mid = last_good_res > 0 ? last_good_res + (len - last_good_res) / 2 : len / 2; // и у нас еще нет хорошего результата, то длину делим пополам
+                                                                                           // если есть хороший результат, мы берем позицию между хорошим результатом и нынешней длиной
+        return FindZBinSearch(hash, mid, pos, last_good_res, len);                         // рекурсивно ищем дальше, меняя только длину подстрок и плохой результат
     }
     else
     {
-        int mid2 = (limit - right) / 2;
-        equal_longest_str_BS(hash, left, mid2, limit);
+        // если же подстроки равны
+        if (last_bad_res == 0) // и нам повезло и сразу целиком они равны, то просто пишем целиком длину
+            return len;
+        if (last_bad_res - len == 1) // нам не повезло, но разница между хорошей и плохой строкой в 1 символ, то нынешняя длина - это наш результат
+            return len;
+
+        int mid = len + (last_bad_res - len) / 2;                 // если же вообще не повезло, то находим середину между последним плохим результатом и нынешней длиной
+        return FindZBinSearch(hash, mid, pos, len, last_bad_res); // снова делем тоже самое но уже длина строк проверяется между длиной и плохим результатом, а хороший результат - это нынешняя длина
     }
-    return right - left;
+
+    return -1;
+}
+
+int FindZ(string str, int position)
+{
+    HashStr hash(str);                        // вычисляем хэши
+    unsigned int len = str.size() - position; // максимальная длина от данной позиции и до конца строки
+    return FindZBinSearch(hash, len, position);
 }
 
 vector<int> z_function_per_log(string str)
@@ -123,10 +143,9 @@ vector<int> z_function_per_log(string str)
     int n = str.size();
     vector<int> res(n, 0);
 
-    HashStr hash(str);
     for (int i = 1; i < n; i++)
     {
-        res[i] = equal_longest_str_BS(&hash, i, n, n);
+        res[i] = FindZ(str, i);
     }
 
     return res;
@@ -142,15 +161,15 @@ int main(int argc, char const *argv[])
 {
     string str{};
     cin >> str;
-    // ifstream in("test");
+
+    // ifstream in("01");
     // if (in.is_open())
     //     in >> str;
     // else
     //     cout << "Error!" << endl;
-
     // in.close();
 
-    printVector(z_function_per_log(str));
+    z_function_per_log(str);
 
     return 0;
 }
