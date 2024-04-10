@@ -88,6 +88,12 @@ public:
         }
     }
 
+    ~HashStr()
+    {
+        delete[] h;
+        delete[] x;
+    }
+
     // Считает равны ли хэши подстрок
     bool Is_substrs_equal(int len, int from1, int from2)
     {
@@ -131,10 +137,9 @@ int FindZBinSearch(HashStr &hash, const int len, const int pos, const int last_g
     return -1;
 }
 
-int FindZ(string str, int position)
+int FindZ(HashStr &hash, int len, int position)
 {
-    HashStr hash(str);                        // вычисляем хэши
-    unsigned int len = str.size() - position; // максимальная длина от данной позиции и до конца строки
+    // unsigned int len = str.size() - position; // максимальная длина от данной позиции и до конца строки
     return FindZBinSearch(hash, len, position);
 }
 
@@ -143,9 +148,11 @@ vector<int> z_function_per_log(string str)
     int n = str.size();
     vector<int> res(n, 0);
 
+    HashStr hash(str); // вычисляем хэши
+
     for (int i = 1; i < n; i++)
     {
-        res[i] = FindZ(str, i);
+        res[i] = FindZ(hash, str.size() - i, i);
     }
 
     return res;
@@ -169,7 +176,7 @@ int main(int argc, char const *argv[])
     //     cout << "Error!" << endl;
     // in.close();
 
-    z_function_per_log(str);
-
+    printVector(z_function_per_log(str));
+    
     return 0;
 }
