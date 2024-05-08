@@ -30,6 +30,13 @@ public:
         }
     }
 
+    ~HashStr()
+    {
+        delete[] h;
+        delete[] rh;
+        delete[] x;
+    }
+
     // Считает равны ли хэши подстрок
     bool Is_substrs_equal(int len, int from1, int from2)
     {

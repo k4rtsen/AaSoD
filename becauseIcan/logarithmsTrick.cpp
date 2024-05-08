@@ -38,7 +38,7 @@ unsigned short digitCount(unsigned long long number)
 unsigned short hiDigit(unsigned long long number)
 {
     double k = log10(number);
-    k = k - floor(k);
+    k -= floor(k);
     return pow(10, k);
 }
 
