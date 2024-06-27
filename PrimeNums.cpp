@@ -21,16 +21,42 @@ void printVector(vector<bool> arr)
     cout << "}" << endl;
 }
 
+void printVector(const vector<char> &vec)
+{
+    cout << "{ ";
+    for (int i = 0; i < vec.size(); i++)
+        if (vec[i] == 't')
+            cout << i << "; ";
+    cout << "}" << endl;
+}
+
+void printArray(bool *arr, int size)
+{
+    cout << "{ ";
+    for (int i = 0; i < size; i++)
+        if (arr[i])
+            cout << i + 1 << ", ";
+    cout << "}" << endl;
+}
+
+void EratosthenesSieveArr(bool *arr, int n)
+{
+    for (long i = 2; i < n; i++)
+        if (arr[i])
+            for (long j = i; j * i < n; j++)
+                arr[i * j] = false;
+}
+
 // vector<char> faster than vector<bool>
 
 vector<char> EratosthenesSieve(int n)
 {
     vector<char> sieve(n, 't');
 
-    for (int i = 2; i < n; i++)
+    for (long i = 2; i < n; i++)
         if (sieve[i] == 't')
-            for (int j = i * 2; j < n / 2; j += i)
-                sieve[j] = 'f';
+            for (long j = i; j * i < n; j++)
+                sieve[i * j] = 'f'; // происходит переполнение
 
     return sieve;
 }
@@ -76,13 +102,28 @@ std::vector<char> AtkinSieve(unsigned const limit)
 int main()
 {
     constexpr unsigned int N = 10e8;
+    bool *arr = new bool[N];
+    forn(i, N)
+        arr[i] = true;
+    vector<char> v;
     clock_t start = clock();
-
-    EratosthenesSieve(N);
-    // AtkinSieve(N);
+    try
+    {
+        //EratosthenesSieve(N);
+        EratosthenesSieveArr(arr, N);
+        //AtkinSieve(N);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 
     clock_t end = clock();
     double seconds = (double)(end - start) / CLOCKS_PER_SEC;
     printf("The time: %f seconds\n", seconds);
+
+    // printArray(arr, N);
+    // printVector(v);
+
     return 0;
 }
