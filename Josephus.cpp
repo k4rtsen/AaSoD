@@ -58,10 +58,16 @@ unsigned Josephus(unsigned n, unsigned m)
 
 int main(int argc, char const *argv[])
 {
-    constexpr int N = 9;
-    constexpr int M = 5;
+    constexpr int N = 10e7;
+    constexpr int M = 3;
+
+    clock_t start = clock();
 
     cout << Josephus(N, M) << endl;
+
+    clock_t end = clock();
+    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("The time: %f seconds\n", seconds);
 
     return 0;
 }
