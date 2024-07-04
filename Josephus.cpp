@@ -42,7 +42,9 @@ unsigned Josephus(unsigned n, unsigned m)
         }
 
         // deleting
+        link dead = temp->next;
         temp->next = temp->next->next;
+        delete dead;
     }
 
     int result = temp->item;
@@ -58,7 +60,7 @@ unsigned Josephus(unsigned n, unsigned m)
 
 int main(int argc, char const *argv[])
 {
-    constexpr int N = 10e7;
+    constexpr int N = 10e6;
     constexpr int M = 3;
 
     clock_t start = clock();
