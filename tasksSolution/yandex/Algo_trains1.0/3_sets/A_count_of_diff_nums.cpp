@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <set>
 using namespace std;
 
@@ -8,9 +9,19 @@ int main(int argc, char const *argv[])
 {
     set<int> s;
     int n;
-    while(cin >> n){
-        s.insert(n);
+
+    ifstream in("input.txt");
+    int count{0};
+    int temp{0};
+    if (in.is_open())
+    {
+        while (in >> temp)
+        {
+            count++;
+            s.insert(temp);
+        }
     }
+    in.close();
 
     cout << s.size() << endl;
 
