@@ -35,6 +35,8 @@
 *.sln
 *.vcxproj*
 *.vs*
+*.txt
+
 *Debug
 *.pdb
 *.ilk
