@@ -1,3 +1,11 @@
+/**
+ * @file B_sumOnCub.cpp
+ * task : Дан двумерный массив a. Поступает q запросов поиска суммы на прямоугольнике, где [lx,ly] - это левая верхняя координата, а [rx,ry] - это нижняя правая координата. Вам необходимо на них отвечать.
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #include <iostream>
 #include <fstream>
 #include <vector>

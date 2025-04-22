@@ -1,3 +1,11 @@
+/**
+ * @file A_sumOnSections.cpp
+ * task : Дан массив a. Поступает q запросов поиска суммы на отрезке [l, r]. Вам необходимо на них отвечать.
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #include <iostream>
 #include <fstream>
 #include <vector>
