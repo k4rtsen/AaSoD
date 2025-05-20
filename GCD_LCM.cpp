@@ -1,6 +1,20 @@
 #include <cassert>
 #include <iostream>
 
+/**
+ * @brief recursive Euclid algorithm
+ * 
+ * @param m integer, where m > n
+ * @param n integer, where n < m
+ * @return int greatest common divisor
+ */
+int gcd(int m, int n)
+{
+    if (n == 0)
+        return m;
+    return gcd(n, m % n);
+}
+
 template <class Int>
 Int gcd(Int a, Int b)
 {
