@@ -1,39 +1,79 @@
 #include <iostream>
-//using namespace std;
-using std::cout;
-using std::cin;
-using std::endl;
+#include <fstream>
+#include <vector>
+using namespace std;
 
-int BinarySearch(int*, int, int, int);
+#define forn(i, n) for (size_t i = 0; i < static_cast<size_t>(n); i++)
 
-int main() {
-	
-	int len = 0;
-	int item = 0;
-	cin >> len;
-	cin >> item;
-	int* mas = new int[len];
-	for (int i = 0; i < len; i++)
-		mas[i] = i + 1;
-	
-	cout << BinarySearch(mas, item, 0, len-1) << endl;
+int BinarySearch(int *, int, int, int);
 
-	delete[] mas;
-	system("pause");
+typedef vector<int>::iterator int_iter;
+// if we return int_iter, we dont check the existence of the element.
+// but we can return the int -1 value if the element doesnt exist.
+int_iter BS(int_iter start, int_iter end, int searchItem);
+
+int main()
+{
+	ifstream ifs("D:\\karen\\dev\\cpp\\AaSoD\\read.txt");
+	if (ifs.is_open())
+	{
+		int n{0};
+		vector<int> arr;
+		ifs >> n;
+		forn(_, n)
+		{
+			int x{0};
+			ifs >> x;
+			arr.push_back(x);
+		}
+
+		int searcItem{0};
+		ifs >> searcItem;
+		
+		clock_t start = clock();
+
+		cout << BS(arr.begin(), arr.end(), searcItem) - arr.begin() << endl;
+
+		clock_t end = clock();
+		double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+		printf("The time: %f seconds\n", seconds);
+	}
 }
 
 int BinarySearch(int *arr, int item, int start, int end)
 {
 	int mid = (end + start) / 2;
-	if (end - start <= 1) {
-		if (arr[end - start] != item) return -1;
-		else return arr[end - start];
+	if (end - start <= 1)
+	{
+		if (arr[end - start] != item)
+			return -1;
+		else
+			return arr[end - start];
 	}
-	else {
-		if (arr[mid] == item) return arr[mid];
-		else {
-			if (arr[mid] < item) BinarySearch(arr, item, mid, end);
-			else BinarySearch(arr, item, start, mid);
+	else
+	{
+		if (arr[mid] == item)
+			return arr[mid];
+		else
+		{
+			if (arr[mid] < item)
+				BinarySearch(arr, item, mid, end);
+			else
+				BinarySearch(arr, item, start, mid);
 		}
 	}
+}
+
+int_iter BS(int_iter start, int_iter end, int searchItem)
+{
+	int_iter mid = (start + (end - start) / 2);
+	if (*mid == searchItem)
+		return mid;
+	// else if ((end - start) == 1)
+	// 	return -1;
+
+	if (*mid > searchItem)
+		return BS(start, mid, searchItem);
+	else
+		return BS(mid, end, searchItem);
 }
