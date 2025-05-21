@@ -58,6 +58,61 @@ unsigned Josephus(unsigned n, unsigned m)
     return result + 1;
 }
 
+link getHead(unsigned count)
+{
+    // init stack
+    link head = new node(0, nullptr);
+    link temp = new node(1, nullptr);
+    head->next = temp;
+
+    for (size_t i = 2; i < count; i++)
+    {
+        link n = new node(i, nullptr);
+        temp->next = n;
+        temp = n;
+    }
+
+    // here temp point on the last node
+    temp->next = head; // loop
+
+    return head;
+}
+
+link getTail(link head, link tail)
+{
+    if (tail->next == head)
+        return tail;
+
+    return getTail(head, tail->next);
+}
+
+unsigned R_Josephus(link cur, unsigned m);
+
+unsigned Josephus(unsigned n, unsigned m)
+{
+    link head = getHead(n);
+    link tail = head;
+    tail = getTail(head, tail);
+
+    return R_Josephus(tail, m);
+}
+
+unsigned R_Josephus(link cur, unsigned m)
+{
+    if (cur->next == cur)
+        return cur->item;
+    forn(_, m - 1)
+    {
+        cur = cur->next;
+    }
+
+    link dead = cur->next;
+    cur->next = cur->next->next;
+    delete dead;
+
+    return R_Josephus(cur, m);
+}
+
 int main(int argc, char const *argv[])
 {
     constexpr int N = 10e6;
